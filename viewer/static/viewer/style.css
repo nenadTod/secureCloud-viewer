@@ -1,0 +1,26 @@
+.navbar-brand {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 2em !important;
+}
+
+.panel-footer {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.1em !important;
+}
+
+.navbar-brand,
+.navbar-form{
+    padding-top: 1.2em !important;
+}
+
+.footer {
+    position: absolute !important;
+    bottom: 0 !important;
+    width: 100% !important;
+}
+
+body {
+    background-image: url("images/background.jpg") !important;
+    background-size:100%;
+    background-attachment: fixed;
+}
