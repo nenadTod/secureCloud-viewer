@@ -12,6 +12,7 @@ Web application that decrypts content stored on (potentially any) cloud, and pre
 8 In "PyCharm Professional" open "Run"->"Edit Configurations..."
 9 Add new "Django server"
 10 Type "Host": 127.0.0.1 and "Port": arbitrary value (recommended: 8000)
+<br/><br/>
 Now you can Run and Debug server from PyCharm
 
 ## Software requirements

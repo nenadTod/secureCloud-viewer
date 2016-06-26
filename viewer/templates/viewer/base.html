@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% load staticfiles %}
+    <link rel="shortcut icon" type="image/png" href="{%  static 'favicon.ico' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}"/>
+</head>
+<body>
+    <h1>Početna stranica</h1>
+    <h2>Django radi!</h2>
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>
