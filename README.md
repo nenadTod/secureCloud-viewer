@@ -17,4 +17,4 @@ Now you can Run and Debug server from PyCharm
 
 ## Software requirements
 - PyCharm Professional 2016.1 (https://www.jetbrains.com/pycharm/download/#section=windows)
-- Django 1.9 (in cmd run as administrator: "pip install django=1.9")
+- Django 1.9 (in cmd run as administrator: "pip install django==1.9")
