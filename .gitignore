@@ -1,4 +1,5 @@
 .idea/
+.idea\
 *.pyc
 workspace.xml
 db.sqllite3

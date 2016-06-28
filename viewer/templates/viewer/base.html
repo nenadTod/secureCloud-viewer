@@ -5,9 +5,13 @@
     <title>{% block title %}{% endblock %}</title>
     {% load staticfiles %}
     <link href='https://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="{% static 'viewer/style.css' %}"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'viewer/css/style.css' %}"/>
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+    <link rel="stylesheet" href={% static 'viewer/css/bootstrap-image-gallery.min.css' %}>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+
     <script src="{% static 'viewer/js/jquery-1.12.4.js' %}"></script>
     <script src="{% static 'viewer/js/index.js' %}"></script>
 </head>
@@ -92,5 +96,6 @@
             <span class="navbar-right">Nenad Todorović / David Vuletić / Nemanja Miladinović // July 2016&nbsp</span>
         </div>
     </footer>
+
 </body>
 </html>

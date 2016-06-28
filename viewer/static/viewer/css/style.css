@@ -2,7 +2,7 @@
 			OPSTI TAGOVI
 					****************/
 body {
-    background-image: url("images/background.jpg") !important;
+    background-image: url("../img/background.jpg") !important;
     background-size: 100%;
     background-attachment: fixed;
     font-family: 'Permanent Marker', cursive !important;
