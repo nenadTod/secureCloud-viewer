@@ -23,15 +23,17 @@ h2 {
 
 .navbar {
     width: 100% !important;
-    /*position: fixed !important;
-    top: 0 !important;*/
+    position: fixed !important;
+    top: 0 !important;
+    z-index: 100;
 }
 
 .footer {
     width: 100% !important;
-    /*position: fixed !important;*/
+    position: fixed !important;
     bottom: 0 !important;
     font-size: 1.1em !important;
+    z-index: 100;
 }
 
 .navbar-brand,
@@ -43,8 +45,8 @@ h2 {
 	margin:0 auto;
 	overflow:hidden;
 	width:85em;
-	/*margin-top: 6em !important;
-	margin-bottom: 3em !important;*/
+	margin-top: 6em !important;
+	margin-bottom: 3em !important;
 }
 
 .content {
@@ -101,6 +103,7 @@ h2 {
 	text-align: center;
 	width: 17.9em;
 	height: 19em;
+	position: relative;
 }
 
 .single-image {
@@ -109,4 +112,18 @@ h2 {
 	position: relative;
 	top: 50%;
 	transform: translateY(-50%);
+}
+
+.image-item {
+	cursor: pointer;
+}
+
+.over-image {
+	display: none;
+	max-width: 100%;
+	max-height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+    z-index: 10;
 }
