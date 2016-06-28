@@ -14,19 +14,19 @@
 
             <div class="images-list">
                 <div class="image-item">
-                    <a href="{% static 'viewer/img/image1.jpg' %}" title="Nova slika" data-gallery>
+                    <a href="{% static 'viewer/img/image1.jpg' %}" title="Nova slika1" data-gallery>
                         <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
                         <img class="single-image" src="{% static 'viewer/img/image1.jpg' %}" />
                     </a>
                 </div>
                 <div class="image-item">
-                    <a href="{% static 'viewer/img/image2.jpg' %}" title="Nova slika" data-gallery>
+                    <a href="{% static 'viewer/img/image2.jpg' %}" title="Nova slika2" data-gallery>
                         <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
                         <img class="single-image" src="{% static 'viewer/img/image2.jpg' %}" />
                     </a>
                 </div>
                 <div class="image-item">
-                    <a href="{% static 'viewer/img/image3.jpg' %}" title="Nova slika sa mnogo dugackim nazivom, ovo stavljam ovako
+                    <a href="{% static 'viewer/img/image3.jpg' %}" title="Nova slika3 sa mnogo dugackim nazivom, ovo stavljam ovako
                     cito da bih video kako ce se ponasti celo polje...
 
                     " data-gallery>
@@ -35,37 +35,37 @@
                     </a>
                 </div>
                 <div class="image-item">
-                    <a href="{% static 'viewer/img/image4.jpg' %}" title="Nova slika" data-gallery>
+                    <a href="{% static 'viewer/img/image4.jpg' %}" title="Nova slika4" data-gallery>
                         <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
                         <img class="single-image" src="{% static 'viewer/img/image4.jpg' %}" />
                     </a>
                 </div>
                 <div class="image-item">
-                    <a href="{% static 'viewer/img/image5.jpg' %}" title="Nova slika" data-gallery>
+                    <a href="{% static 'viewer/img/image5.jpg' %}" title="Nova slika5" data-gallery>
                         <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
                         <img class="single-image" src="{% static 'viewer/img/image5.jpg' %}" />
                     </a>
                 </div>
                 <div class="image-item">
-                    <a href="{% static 'viewer/img/image6.jpg' %}" title="Nova slika" data-gallery>
+                    <a href="{% static 'viewer/img/image6.jpg' %}" title="Nova slika6" data-gallery>
                         <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
                         <img class="single-image" src="{% static 'viewer/img/image6.jpg' %}" />
                     </a>
                 </div>
                 <div class="image-item">
-                    <a href="{% static 'viewer/img/image7.jpg' %}" title="Nova slika" data-gallery>
+                    <a href="{% static 'viewer/img/image7.jpg' %}" title="Nova slika7" data-gallery>
                         <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
                         <img class="single-image" src="{% static 'viewer/img/image7.jpg' %}" />
                     </a>
                 </div>
                 <div class="image-item">
-                    <a href="{% static 'viewer/img/image8.jpg' %}" title="Nova slika" data-gallery>
+                    <a href="{% static 'viewer/img/image8.jpg' %}" title="Nova slika8" data-gallery>
                         <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
                         <img class="single-image" src="{% static 'viewer/img/image8.jpg' %}" />
                     </a>
                 </div>
                 <div class="image-item">
-                    <a href="{% static 'viewer/img/image9.jpg' %}" title="Nova slika" data-gallery>
+                    <a href="{% static 'viewer/img/image9.jpg' %}" title="Nova slika9" data-gallery>
                         <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
                         <img class="single-image" src="{% static 'viewer/img/image9.jpg' %}" />
                     </a>
@@ -86,30 +86,17 @@
         </div>
 
         <div id="blueimp-gallery" class="blueimp-gallery">
-            <!-- The container for the modal slides -->
             <div class="slides"></div>
-            <!-- Controls for the borderless lightbox -->
-            <h3 class="title"></h3>
-            <a class="prev">‹</a>
-            <a class="next">›</a>
-            <a class="close">×</a>
-            <a class="play-pause"></a>
-            <ol class="indicator"></ol>
-            <!-- The modal dialog, which will be used to wrap the lightbox content -->
             <div class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
 
-                        <div class="modal-part-side">
-                            <button type="button" class="btn btn-default prev mybutton">
-                                <i class="glyphicon glyphicon-chevron-left"></i>
-                            </button>
+                        <div class="modal-part-side prev">
+                            <span class="glyphicon glyphicon-chevron-left mybutton"></span>
                         </div>
                         <div class="modal-body modal-part-center next"></div>
-                        <div class="modal-part-side">
-                            <button type="button" class="btn btn-default next mybutton">
-                                <i class="glyphicon glyphicon-chevron-right"></i>
-                            </button>
+                        <div class="modal-part-side next">
+                            <span class="glyphicon glyphicon-chevron-right mybutton"></span>
                         </div>
 
                     </div>

@@ -12,63 +12,72 @@
 /*global define, window */
 
 ;(function (factory) {
-  'use strict'
-  if (typeof define === 'function' && define.amd) {
-    define([
-      'jquery',
-      './blueimp-gallery'
-    ], factory)
-  } else {
-    factory(
-      window.jQuery,
-      window.blueimp.Gallery
-    )
-  }
-}(function ($, Gallery) {
-  'use strict'
-
-  $.extend(Gallery.prototype.options, {
-    useBootstrapModal: true
-  })
-
-  var close = Gallery.prototype.close
-  var imageFactory = Gallery.prototype.imageFactory
-
-  $.extend(Gallery.prototype, {
-    modalFactory: function (obj, callback, factoryInterface, factory) {
-      if (!this.options.useBootstrapModal || factoryInterface) {
-        return factory.call(this, obj, callback, factoryInterface)
-      }
-      var that = this
-      var modalTemplate = this.container.children('.modal')
-      var modal = modalTemplate.clone().show().on('click', function (event) {
-        // Close modal if click is outside of modal-content:
-        if (event.target === modal[0] ||
-          event.target === modal.children()[0]) {
-          event.preventDefault()
-          event.stopPropagation()
-          that.close()
-        }
-      })
-      var element = factory.call(this, obj, function (event) {
-        callback({
-          type: event.type,
-          target: modal[0]
-        })
-        modal.addClass('in')
-      }, factoryInterface)
-      modal.find('.modal-body').append(element)
-      return modal[0]
-    },
-
-    imageFactory: function (obj, callback, factoryInterface) {
-      return this.modalFactory(obj, callback, factoryInterface, imageFactory)
-    },
-
-    close: function () {
-      this.container.find('.modal').removeClass('in')
-      close.call(this)
+    'use strict'
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'jquery',
+            './blueimp-gallery'
+        ], factory)
+    } else {
+        factory(
+            window.jQuery,
+            window.blueimp.Gallery
+        )
     }
+}(function ($, Gallery) {
+    'use strict'
 
-  })
+    $.extend(Gallery.prototype.options, {
+        useBootstrapModal: true
+    })
+
+    var close = Gallery.prototype.close
+    var imageFactory = Gallery.prototype.imageFactory
+
+    $.extend(Gallery.prototype, {
+        modalFactory: function (obj, callback, factoryInterface, factory) {
+            if (!this.options.useBootstrapModal || factoryInterface) {
+                return factory.call(this, obj, callback, factoryInterface)
+            }
+            var that = this
+            var modalTemplate = this.container.children('.modal')
+            var modal = modalTemplate.clone().show().on('click', function (event) {
+                // Close modal if click is outside of modal-content:
+                if (event.target === modal[0] ||
+                    event.target === modal.children()[0]) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    that.close()
+                }
+            })
+            var element = factory.call(this, obj, function (event) {
+                callback({
+                    type: event.type,
+                    target: modal[0]
+                })
+                modal.addClass('in')
+            }, factoryInterface)
+
+            modal.find('.modal-body').append(element)
+            var maxWidht = window.screen.availWidth - 50
+
+            if (element.height < element.width) {
+                var width = element.width + 140;
+                var finalWidth = ((width < maxWidht) ? width : maxWidht) + "px"
+                modal.find('.modal-dialog').css("width", finalWidth);
+            }
+
+            return modal[0]
+        },
+
+        imageFactory: function (obj, callback, factoryInterface) {
+            return this.modalFactory(obj, callback, factoryInterface, imageFactory)
+        },
+
+        close: function () {
+            this.container.find('.modal').removeClass('in')
+            close.call(this)
+        }
+
+    })
 }))
