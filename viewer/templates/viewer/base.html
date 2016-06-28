@@ -25,6 +25,10 @@
                     </div>
                 </a>
 
+				<div class="navbar-form navbar-right">
+					<button type="button" class="btn btn-default" title="Log Out"><span class="glyphicon glyphicon-off"></span></button>
+				</div>
+
                 <form class="navbar-form navbar-right" method="post" action="{% url 'viewer.views.change_cloud' %}">
                     <div class="form-group">
                         <select type="text" id="cloud_select" class="form-control" name="cloud_name" value="{{ selected_drive }}">
@@ -33,26 +37,59 @@
                             <option value="one_drive">One Drive</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-default">Open cloud</button>
+                    <button type="submit" class="btn btn-default" title="Open cloud">Open cloud</button>
                 </form>
+
+				<div class="navbar-form navbar-right">
+					<button type="button" class="btn btn-default" title="Browse location">Browse gallery</button>
+				</div>
 
             </div>
         </nav>
     </div>
 
-    <div class="tree">
+	<div class="middle">
+		<div class="details">
+			<div class="panel panel-default">
 
-    </div>
+				<div class="panel-heading">
+					<h2 class="panel-title">Cloud details</h2>
+				</div>
 
-    <div class="content">
-        {% block content %}
-        {% endblock %}
-    </div>
+				<div class="panel-body">
+					<table class="details-table">
+						<tr><th>Cloud:</th><td id="cloud_select_helper">{{ selected_drive }}</td></tr>
+						<tr><th>Username:</th><td></td></tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+
+				<div class="panel-heading">
+					<h2 class="panel-title">Gallery details</h2>
+				</div>
+
+				<div class="panel-body">
+					<table class="details-table">
+						<tr><th>Pictures no:</th><td></td></tr>
+						<tr><th>Shared with:</th><td></td></tr>
+						<tr><th>Location:</th><td>//clud/asdasdasd/dsagvbxcvbr t463/344/15asc</td></tr>
+					</table>
+				</div>
+			</div>
+		</div>
+
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+	</div>
 
     <footer class="footer">
         <div class="panel-footer">
             <b>Secure Clouding</b>
-            <span class="navbar-right">Nenad Todorovic / David Vuletic / Nemanja Miladinovic // July 2016&nbsp</span>
+            <span class="navbar-right">Nenad Todorović / David Vuletić / Nemanja Miladinović // July 2016&nbsp</span>
         </div>
     </footer>
 </body>

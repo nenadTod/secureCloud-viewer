@@ -1,10 +1,36 @@
+/****************
+			OPSTI TAGOVI
+					****************/
+body {
+    background-image: url("images/background.jpg") !important;
+    background-size: 100%;
+    background-attachment: fixed;
+    font-family: 'Permanent Marker', cursive !important;
+}
+
+h2 {
+	font-size: 1.8em !important;
+	color: #555 !important;
+}
+
+/****************
+			KONTEJNERSKE KLASE - PREPRAVKE
+									****************/
 .navbar-brand {
     font-family: 'Permanent Marker', cursive;
     font-size: 2em !important;
 }
 
-.panel-footer {
-    font-family: 'Permanent Marker', cursive;
+.navbar {
+    width: 100% !important;
+    /*position: fixed !important;
+    top: 0 !important;*/
+}
+
+.footer {
+    width: 100% !important;
+    /*position: fixed !important;*/
+    bottom: 0 !important;
     font-size: 1.1em !important;
 }
 
@@ -13,14 +39,74 @@
     padding-top: 1.2em !important;
 }
 
-.footer {
-    position: absolute !important;
-    bottom: 0 !important;
-    width: 100% !important;
+.middle {
+	margin:0 auto;
+	overflow:hidden;
+	width:85em;
+	/*margin-top: 6em !important;
+	margin-bottom: 3em !important;*/
 }
 
-body {
-    background-image: url("images/background.jpg") !important;
-    background-size:100%;
-    background-attachment: fixed;
+.content {
+	margin-left: 1em;
+	width: 59em;
+	float: left;
+	overflow: hidden;
+}
+
+.details {
+	width: 25em;
+	float: left;
+	overflow: hidden;
+}
+
+.panel {
+	color: #777 !important;
+}
+
+.pagination {
+	margin-top: 0.3em !important;
+	margin-bottom: 0.3em !important;
+}
+/****************
+			MOJE KLASE
+					****************/
+.details-table {
+	width: 23em;
+    table-layout: fixed;
+}
+
+.details-table th {
+	width: 7em;
+	padding-top: 0.6em;
+	padding-bottom: 0.6em;
+	font-size: 1.1em;
+	font-weight: normal;
+}
+
+.details-table td {
+	width: 13em;
+	padding-top: 0.6em;
+	padding-bottom: 0.6em;
+	font-size: 1.2em;
+	font-style: italic;
+	word-wrap: break-word;
+}
+
+.image-item {
+	border: 1px solid #CCC;
+	float: left;
+	margin: 0.5em;
+	padding: 0.5em;
+	text-align: center;
+	width: 17.9em;
+	height: 19em;
+}
+
+.single-image {
+	max-width: 100%;
+	max-height: 100%;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
 }
