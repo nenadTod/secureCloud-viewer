@@ -1,6 +1,4 @@
-.idea
+.idea/*
+.idea\*
 *.pyc
 workspace.xml
-db.sqllite3
-.idea/workspace.xml
-**/.idea/workspace.xml
