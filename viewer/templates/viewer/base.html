@@ -44,9 +44,17 @@
                     <button type="submit" class="btn btn-default" title="Open cloud">Open cloud</button>
                 </form>
 
-				<div class="navbar-form navbar-right">
+
+                <form class="navbar-form navbar-right" method="post" action="{% url 'viewer.views.change_gallery' %}">
+                    <div class="form-group">
+                        <select type="text" id="gallery_select" class="form-control" name="gallery_name" value="{{ selected_gallery }}">
+                            <option value="secure_clouding">secure_clouding</option>
+                            <option value="folder1-secure">folder1-secure</option>
+                            <option value="new_folder">new_folder</option>
+                        </select>
+                    </div>
 					<button type="button" class="btn btn-default" title="Browse location">Browse gallery</button>
-				</div>
+                </form>
 
             </div>
         </nav>
@@ -76,18 +84,45 @@
 
 				<div class="panel-body">
 					<table class="details-table">
-						<tr><th>Pictures no:</th><td></td></tr>
-						<tr><th>Shared with:</th><td></td></tr>
 						<tr><th>Location:</th><td>//clud/asdasdasd/dsagvbxcvbr t463/344/15asc</td></tr>
+						<tr><th>Pictures no:</th><td></td></tr>
+						<tr><th>Pages no:</th><td></td></tr>
+						<tr><th>Current page:</th><td></td></tr>
 					</table>
 				</div>
 			</div>
 		</div>
 
         <div class="content">
-            {% block content %}
-            {% endblock %}
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <h2 class="panel-title">Gallery content</h2>
+                </div>
+
+                <div class="panel-body">
+
+                    {% block content %}
+                    {% endblock %}
+
+                </div>
+
+                <div class="text-center panel-footer">
+
+                    <nav>
+                        <ul class="pagination">
+                            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                            <li class=""><a href="#">2 <span class="sr-only">(current)</span></a></li>
+                            <li class="enabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a></li>
+                        </ul>
+                    </nav>
+
+                </div>
+
+            </div>
         </div>
+
 	</div>
 
     <footer class="footer">

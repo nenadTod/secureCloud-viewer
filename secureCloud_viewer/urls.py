@@ -22,5 +22,6 @@ from viewer import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^change_cloud', views.change_cloud, name='change_cloud'),
+    url(r'^change_gallery', views.change_gallery, name='change_gallery'),
     url(r'^$', views.index, name="index"),
 ]

@@ -4,108 +4,85 @@
 
 {% block content %}
 
-    <div class="panel panel-default">
+    <div class="images-list">
+        <div class="image-item">
+            <a href="{% static 'viewer/img/image1.jpg' %}" title="Nova slika1" data-gallery>
+                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
+                <img class="single-image" src="{% static 'viewer/img/image1.jpg' %}" />
+            </a>
+        </div>
+        <div class="image-item">
+            <a href="{% static 'viewer/img/image2.jpg' %}" title="Nova slika2" data-gallery>
+                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
+                <img class="single-image" src="{% static 'viewer/img/image2.jpg' %}" />
+            </a>
+        </div>
+        <div class="image-item">
+            <a href="{% static 'viewer/img/image3.jpg' %}" title="Nova slika3 sa mnogo dugackim nazivom, ovo stavljam ovako
+            cito da bih video kako ce se ponasti celo polje...
 
-        <div class="panel-heading">
-            <h2 class="panel-title">Gallery content</h2>
+            " data-gallery>
+                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
+                <img class="single-image" src="{% static 'viewer/img/image3.jpg' %}" />
+            </a>
+        </div>
+        <div class="image-item">
+            <a href="{% static 'viewer/img/image4.jpg' %}" title="Nova slika4" data-gallery>
+                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
+                <img class="single-image" src="{% static 'viewer/img/image4.jpg' %}" />
+            </a>
+        </div>
+        <div class="image-item">
+            <a href="{% static 'viewer/img/image5.jpg' %}" title="Nova slika5" data-gallery>
+                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
+                <img class="single-image" src="{% static 'viewer/img/image5.jpg' %}" />
+            </a>
+        </div>
+        <div class="image-item">
+            <a href="{% static 'viewer/img/image6.jpg' %}" title="Nova slika6" data-gallery>
+                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
+                <img class="single-image" src="{% static 'viewer/img/image6.jpg' %}" />
+            </a>
+        </div>
+        <div class="image-item">
+            <a href="{% static 'viewer/img/image7.jpg' %}" title="Nova slika7" data-gallery>
+                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
+                <img class="single-image" src="{% static 'viewer/img/image7.jpg' %}" />
+            </a>
+        </div>
+        <div class="image-item">
+            <a href="{% static 'viewer/img/image8.jpg' %}" title="Nova slika8" data-gallery>
+                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
+                <img class="single-image" src="{% static 'viewer/img/image8.jpg' %}" />
+            </a>
+        </div>
+        <div class="image-item">
+            <a href="{% static 'viewer/img/image9.jpg' %}" title="Nova slika9" data-gallery>
+                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
+                <img class="single-image" src="{% static 'viewer/img/image9.jpg' %}" />
+            </a>
         </div>
 
-        <div class="panel-body">
+    </div>
 
-            <div class="images-list">
-                <div class="image-item">
-                    <a href="{% static 'viewer/img/image1.jpg' %}" title="Nova slika1" data-gallery>
-                        <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                        <img class="single-image" src="{% static 'viewer/img/image1.jpg' %}" />
-                    </a>
-                </div>
-                <div class="image-item">
-                    <a href="{% static 'viewer/img/image2.jpg' %}" title="Nova slika2" data-gallery>
-                        <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                        <img class="single-image" src="{% static 'viewer/img/image2.jpg' %}" />
-                    </a>
-                </div>
-                <div class="image-item">
-                    <a href="{% static 'viewer/img/image3.jpg' %}" title="Nova slika3 sa mnogo dugackim nazivom, ovo stavljam ovako
-                    cito da bih video kako ce se ponasti celo polje...
-
-                    " data-gallery>
-                        <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                        <img class="single-image" src="{% static 'viewer/img/image3.jpg' %}" />
-                    </a>
-                </div>
-                <div class="image-item">
-                    <a href="{% static 'viewer/img/image4.jpg' %}" title="Nova slika4" data-gallery>
-                        <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                        <img class="single-image" src="{% static 'viewer/img/image4.jpg' %}" />
-                    </a>
-                </div>
-                <div class="image-item">
-                    <a href="{% static 'viewer/img/image5.jpg' %}" title="Nova slika5" data-gallery>
-                        <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                        <img class="single-image" src="{% static 'viewer/img/image5.jpg' %}" />
-                    </a>
-                </div>
-                <div class="image-item">
-                    <a href="{% static 'viewer/img/image6.jpg' %}" title="Nova slika6" data-gallery>
-                        <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                        <img class="single-image" src="{% static 'viewer/img/image6.jpg' %}" />
-                    </a>
-                </div>
-                <div class="image-item">
-                    <a href="{% static 'viewer/img/image7.jpg' %}" title="Nova slika7" data-gallery>
-                        <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                        <img class="single-image" src="{% static 'viewer/img/image7.jpg' %}" />
-                    </a>
-                </div>
-                <div class="image-item">
-                    <a href="{% static 'viewer/img/image8.jpg' %}" title="Nova slika8" data-gallery>
-                        <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                        <img class="single-image" src="{% static 'viewer/img/image8.jpg' %}" />
-                    </a>
-                </div>
-                <div class="image-item">
-                    <a href="{% static 'viewer/img/image9.jpg' %}" title="Nova slika9" data-gallery>
-                        <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                        <img class="single-image" src="{% static 'viewer/img/image9.jpg' %}" />
-                    </a>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="text-center panel-footer">
-            <nav>
-                <ul class="pagination">
-                    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-                    <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-                    <li class=""><a href="#">2 <span class="sr-only">(current)</span></a></li>
-                    <li class="enabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a></li>
-                </ul>
-            </nav>
-        </div>
-
-        <div id="blueimp-gallery" class="blueimp-gallery">
-            <div class="slides"></div>
-            <div class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-
-                        <div class="modal-part-side prev">
-                            <span class="glyphicon glyphicon-chevron-left mybutton"></span>
-                        </div>
-                        <div class="modal-body modal-part-center next"></div>
-                        <div class="modal-part-side next">
-                            <span class="glyphicon glyphicon-chevron-right mybutton"></span>
-                        </div>
-
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides"></div>
+        <div class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-part-side prev">
+                        <span class="glyphicon glyphicon-chevron-left mybutton"></span>
+                    </div>
+                    <div class="modal-body modal-part-center next"></div>
+                    <div class="modal-part-side next">
+                        <span class="glyphicon glyphicon-chevron-right mybutton"></span>
                     </div>
                 </div>
             </div>
         </div>
-
-        <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
-        <script src={% static 'viewer/js/bootstrap-image-gallery.min.js' %}></script>
     </div>
+
+    <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+    <script src={% static 'viewer/js/bootstrap-image-gallery.min.js' %}></script>
 
 {% endblock %}
