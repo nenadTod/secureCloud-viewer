@@ -1,20 +1,32 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
+import json
 from Crypto.PublicKey import RSA
 from SCCrypto import SCCrypto
+from api.models import Encryption
+
 
 @csrf_exempt
 def trial(request):
-    if request.method == 'GET':
+    if request.method == 'POST':
+        dct = json.loads(request.body)
+        hid = dct['id']
 
-        sc = SCCrypto()
+        ret = Encryption.objects.filter(id=hid)
 
-        key = RSA.generate(2048)
-        keyStr = key.exportKey('PEM')
+        if len(ret) == 0:
+            sc = SCCrypto()
+            key = RSA.generate(2048)
 
-        xord = sc.splitSK_RSA(key)
+            pKeyStr = key.publickey().exportKey('PEM')
+            xord = sc.splitSK_RSA(key)
 
+            n = Encryption(id=hid, public_key=pKeyStr, private_key_part=xord[0], recovery=hid, password="antananarive")
+            n.save()
 
-        ret_val = [{'SK': keyStr, 'ClK': xord[0]}]
-        return JsonResponse(ret_val, safe=False)
+            ret_val = [{'P1K': xord[0]}]
+            return JsonResponse(ret_val, safe=False)
+        else:
+            P1K = ret[0].private_key_part
+            ret_val = [{'P1K': P1K}]
+            return JsonResponse(ret_val, safe=False)

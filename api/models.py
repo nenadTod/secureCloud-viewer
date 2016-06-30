@@ -2,10 +2,10 @@ from django.db import models
 
 class Encryption(models.Model):
     id = models.CharField(max_length=64, primary_key=True)
-    public_key = models.CharField(max_length=3220)
+    public_key = models.CharField(max_length=465)
     private_key_part = models.CharField(max_length=3220)
-    recovery = models.CharField(max_length=3220)
-    password = models.CharField(max_length=3220)
+    recovery = models.CharField(max_length=64)
+    password = models.CharField(max_length=64)
 
     def __str__(self):
         return self.id
