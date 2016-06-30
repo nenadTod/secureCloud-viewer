@@ -5,7 +5,7 @@ class Encryption(models.Model):
     public_key = models.CharField(max_length=465)
     private_key_part = models.CharField(max_length=3220)
     recovery = models.CharField(max_length=64)
-    password = models.CharField(max_length=64)
+    password = models.CharField(max_length=60)
 
     def __str__(self):
         return self.id
