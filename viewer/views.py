@@ -3,7 +3,7 @@ from django.http import HttpResponse
 
 
 def index(request):
-    context = get_context(1)
+    context = get_context()
     return render(request, 'viewer/index.html', context)
 
 def open_page(request):
@@ -15,7 +15,7 @@ def open_page(request):
         print('pao')
         active_page = 1
 
-    context = get_context(active_page)
+    context = get_context()
     return render(request, 'viewer/index.html', context)
 
 def change_cloud(request):
@@ -23,7 +23,7 @@ def change_cloud(request):
 
     ## realy change cloud
 
-    context = get_context(1)
+    context = get_context()
     return render(request, 'viewer/index.html', context)
 
 
@@ -32,7 +32,7 @@ def change_gallery(request):
 
     ## realy change gallery
 
-    context = get_context(1)
+    context = get_context()
     return render(request, 'viewer/index.html', context)
 
 
@@ -40,15 +40,15 @@ def close_session(request):
 
     ## realy close session
 
-    context = get_context(1)
+    context = get_context()
     return render(request, 'viewer/index.html', context)
 
 
-def get_context(active_page):
+def get_context():
     context = {
         "selected_drive": "google_drive",
         "selected_gallery": "nothing",
-        "active_page": active_page,
+        "active_page": 7,
         "total_pages": 42,
     }
     return context
