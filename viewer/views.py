@@ -3,19 +3,52 @@ from django.http import HttpResponse
 
 
 def index(request):
-    selected_drive = "google_drive"    #google_drive, dropbox, one_drive
-    context = {"selected_drive": selected_drive,}
+    context = get_context(1)
     return render(request, 'viewer/index.html', context)
 
+def open_page(request):
+    active_page = request.GET.get('page_number')
+
+    ## realy change page
+
+    if not active_page:
+        print('pao')
+        active_page = 1
+
+    context = get_context(active_page)
+    return render(request, 'viewer/index.html', context)
 
 def change_cloud(request):
     cloud_name = request.POST.get('cloud_name')
-    context = {"selected_drive": cloud_name,}
+
+    ## realy change cloud
+
+    context = get_context(1)
     return render(request, 'viewer/index.html', context)
 
 
 def change_gallery(request):
     gallery_name = request.POST.get('gallery_name')
-    context = {"selected_gallery": gallery_name,}
+
+    ## realy change gallery
+
+    context = get_context(1)
     return render(request, 'viewer/index.html', context)
 
+
+def close_session(request):
+
+    ## realy close session
+
+    context = get_context(1)
+    return render(request, 'viewer/index.html', context)
+
+
+def get_context(active_page):
+    context = {
+        "selected_drive": "google_drive",
+        "selected_gallery": "nothing",
+        "active_page": active_page,
+        "total_pages": 42,
+    }
+    return context
