@@ -5,9 +5,13 @@
     <title>{% block title %}{% endblock %}</title>
     {% load staticfiles %}
     <link href='https://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="{% static 'viewer/style.css' %}"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'viewer/css/style.css' %}"/>
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+    <link rel="stylesheet" href={% static 'viewer/css/bootstrap-image-gallery.min.css' %}>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+
     <script src="{% static 'viewer/js/jquery-1.12.4.js' %}"></script>
     <script src="{% static 'viewer/js/index.js' %}"></script>
 </head>
@@ -18,16 +22,16 @@
 
                 <a href="{% url 'viewer.views.index' %}">
                     <div class="navbar-header">
-                        <img src="{% static 'viewer/images/secure_clouding64.png' %}">
+                        <img src="{% static 'viewer/img/secure_clouding64.png' %}">
                     </div>
                     <div class="navbar-brand">
                         &nbsp Secure Clouding
                     </div>
                 </a>
 
-				<div class="navbar-form navbar-right">
-					<button type="button" class="btn btn-default" title="Log Out"><span class="glyphicon glyphicon-off"></span></button>
-				</div>
+                <form class="navbar-form navbar-right" method="post" action="{% url 'viewer.views.close_session' %}">
+                    <button type="submit" class="btn btn-default" title="Close Current Session"><span class="glyphicon glyphicon-off"></span></button>
+                </form>
 
                 <form class="navbar-form navbar-right" method="post" action="{% url 'viewer.views.change_cloud' %}">
                     <div class="form-group">
@@ -37,12 +41,20 @@
                             <option value="one_drive">One Drive</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-default" title="Open cloud">Open cloud</button>
+                    <button type="submit" class="btn btn-default" title="Open Cloud">Open cloud</button>
                 </form>
 
-				<div class="navbar-form navbar-right">
-					<button type="button" class="btn btn-default" title="Browse location">Browse gallery</button>
-				</div>
+
+                <form class="navbar-form navbar-right" method="post" action="{% url 'viewer.views.change_gallery' %}">
+                    <div class="form-group">
+                        <select type="text" id="gallery_select" class="form-control" name="gallery_name" value="{{ selected_gallery }}">
+                            <option value="secure_clouding">secure_clouding</option>
+                            <option value="folder1-secure">folder1-secure</option>
+                            <option value="new_folder">new_folder</option>
+                        </select>
+                    </div>
+					<button type="button" class="btn btn-default" title="Browse Gallery">Browse gallery</button>
+                </form>
 
             </div>
         </nav>
@@ -57,10 +69,13 @@
 				</div>
 
 				<div class="panel-body">
+                    <!--<p class="no-content-message">There is no cloud selected</p>-->
+
 					<table class="details-table">
 						<tr><th>Cloud:</th><td id="cloud_select_helper">{{ selected_drive }}</td></tr>
 						<tr><th>Username:</th><td></td></tr>
 					</table>
+
 				</div>
 			</div>
 
@@ -71,19 +86,83 @@
 				</div>
 
 				<div class="panel-body">
+                    <!--<p class="no-content-message">There is no gallery selected</p>-->
+
 					<table class="details-table">
+						<tr><th>Location:</th><td id="gallery_select_helper">new_folder</td></tr>
 						<tr><th>Pictures no:</th><td></td></tr>
-						<tr><th>Shared with:</th><td></td></tr>
-						<tr><th>Location:</th><td>//clud/asdasdasd/dsagvbxcvbr t463/344/15asc</td></tr>
+						<tr><th>Pages no:</th><td></td></tr>
+						<tr><th>Current page:</th><td></td></tr>
 					</table>
 				</div>
 			</div>
 		</div>
 
         <div class="content">
-            {% block content %}
-            {% endblock %}
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <h2 class="panel-title">Gallery content</h2>
+                </div>
+
+                <div class="panel-body">
+                    <!--<p class="no-content-message">There is no cloud selected</p>-->
+
+                    {% block content %}
+                    {% endblock %}
+
+                </div>
+                {% if active_page and total_pages and active_page <= total_pages %}
+                    <div class="text-center panel-footer">
+
+                        <nav>
+                            <form id="paging-form" method="get" action="{% url 'viewer.views.open_page' %}">
+                                <input type="text" id="paging-form-page" name="page_number" value="{{ active_page }}" style="display: none;">
+                                <ul class="pagination">
+                                    <li class="single-pager" id="first-page" value="-5"><span aria-label="Previous">&laquo;&laquo;</span></li>
+                                    <li class="single-pager" id="prev-page" value="-9"><span aria-label="Previous">&laquo;</span></li>
+
+                                    {% if active_page < 4 %}
+                                        <li class="single-pager" value="1"><span aria-label="Previous">1</span></li>
+                                        <li class="single-pager" value="2"><span aria-label="Previous">2</span></li>
+                                        <li class="single-pager" value="3"><span aria-label="Previous">3</span></li>
+                                        <li class="single-pager" value="4"><span aria-label="Previous">4</span></li>
+                                        <li class="single-pager" value="5"><span aria-label="Previous">5</span></li>
+                                        <li class="disabled"><span>...</span></li>
+                                    {% elif total_pages|add:"-3" < active_page %}
+                                        <li class="disabled"><span>...</span></li>
+                                        <li class="single-pager" value="{{ total_pages|add:"-4" }}"><span aria-label="Previous">{{ total_pages|add:"-4" }}</span></li>
+                                        <li class="single-pager" value="{{ total_pages|add:"-3" }}"><span aria-label="Previous">{{ total_pages|add:"-3" }}</span></li>
+                                        <li class="single-pager" value="{{ total_pages|add:"-2" }}"><span aria-label="Previous">{{ total_pages|add:"-2" }}</span></li>
+                                        <li class="single-pager" value="{{ total_pages|add:"-1" }}"><span aria-label="Previous">{{ total_pages|add:"-1" }}</span></li>
+                                        <li class="single-pager" value="{{ total_pages }}"><span aria-label="Previous">{{ total_pages }}</span></li>
+                                    {% else %}
+                                        <li class="disabled"><span>...</span></li>
+                                        <li class="single-pager" value="{{ active_page|add:"-2" }}"><span aria-label="Previous">{{ active_page|add:"-2" }}</span></li>
+                                        <li class="single-pager" value="{{ active_page|add:"-1" }}"><span aria-label="Previous">{{ active_page|add:"-1" }}</span></li>
+                                        <li class="single-pager" value="{{ active_page }}"><span aria-label="Previous">{{ active_page }}</span></li>
+                                        <li class="single-pager" value="{{ active_page|add:"1" }}"><span aria-label="Previous">{{ active_page|add:"1" }}</span></li>
+                                        <li class="single-pager" value="{{ active_page|add:"2" }}"><span aria-label="Previous">{{ active_page|add:"2" }}</span></li>
+                                        <li class="disabled"><span>...</span></li>
+                                    {% endif %}
+
+                                    <li class="single-pager" id="next-page" value="-11"><span aria-label="Previous">&raquo;</span></li>
+                                    <li class="single-pager" id="last-page" value="-15"><span aria-label="Previous">&raquo;&raquo;</span></li>
+
+                                    <script type="text/javascript">
+                                        var active = "{{active_page}}";
+                                        var total = "{{total_pages}}";
+                                        set_paging(active, total);
+                                    </script>
+                                </ul>
+                            </form>
+                        </nav>
+                    </div>
+                {% endif %}
+
+            </div>
         </div>
+
 	</div>
 
     <footer class="footer">
@@ -92,5 +171,6 @@
             <span class="navbar-right">Nenad Todorović / David Vuletić / Nemanja Miladinović // July 2016&nbsp</span>
         </div>
     </footer>
+
 </body>
 </html>

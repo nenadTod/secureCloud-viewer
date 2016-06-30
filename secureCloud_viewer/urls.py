@@ -21,8 +21,11 @@ from viewer import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^change_cloud', views.change_cloud, name='change_cloud'),
     url(r'^api/', include('api.urls')),
+    url(r'^change_cloud', views.change_cloud, name='change_cloud'),
+    url(r'^change_gallery', views.change_gallery, name='change_gallery'),
+    url(r'^open_page', views.open_page, name='open_page'),
+    url(r'^close_session', views.close_session, name='close_session'),
     url(r'^$', views.index, name="index"),
 
 ]

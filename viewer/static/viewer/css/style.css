@@ -2,7 +2,7 @@
 			OPSTI TAGOVI
 					****************/
 body {
-    background-image: url("images/background.jpg") !important;
+    background-image: url("../img/background.jpg") !important;
     background-size: 100%;
     background-attachment: fixed;
     font-family: 'Permanent Marker', cursive !important;
@@ -126,4 +126,32 @@ h2 {
 	top: 0;
 	left: 0;
     z-index: 10;
+}
+
+.no-content-message {
+	text-align: center;
+	padding-top: 30px;
+	padding-bottom: 30px;
+ }
+
+.no-content-message-big {
+	text-align: center;
+	padding-top: 200px;
+	padding-bottom: 200px;
+ }
+/****************
+			STRANICENJE
+					****************/
+.single-pager:hover {
+	cursor: pointer;
+}
+
+#prev-page span {
+	margin-left: 0.5em !important;
+	margin-right: 0.5em !important;;
+}
+
+#next-page span {
+	margin-left: 0.5em !important;
+	margin-right: 0.5em !important;;
 }
