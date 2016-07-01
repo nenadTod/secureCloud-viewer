@@ -20,7 +20,7 @@ def getPK(request):
 
         if len(ret) == 0:
 
-            ret_val = [{'P1K': "No such entity."}]
+            ret_val = [{'Ans': "No such entity"}]
             return JsonResponse(ret_val, safe=False)
 
         else:
@@ -28,11 +28,11 @@ def getPK(request):
 
             allowed = hpsw == bcrypt.hashpw(psw, hpsw)
             if allowed:
-                P1K = ret[0].private_key_part
-                ret_val = [{'P1K': P1K}]
+                PK = ret[0].public_key
+                ret_val = [{'PK': PK, 'Ans': "OK"}]
                 return JsonResponse(ret_val, safe=False)
             else:
-                ret_val = [{'P1K': "No permission."}]
+                ret_val = [{'Ans': "No permission"}]
                 return JsonResponse(ret_val, safe=False)
 
 @csrf_exempt
@@ -45,11 +45,11 @@ def exist(request):
 
         if len(ret) == 0:
 
-            ret_val = [{'retVal': "No"}]
+            ret_val = [{'Ans': "No"}]
             return JsonResponse(ret_val, safe=False)
 
         else:
-            ret_val = [{'retVal': "Yes"}]
+            ret_val = [{'Ans': "Yes"}]
             return JsonResponse(ret_val, safe=False)
 
 @csrf_exempt
@@ -59,7 +59,7 @@ def newE(request):
 
         hid = dct['id']
         psw = dct['psw']
-        reqM = dct['reqM']
+        recM = dct['recM']
 
         ret = Encryption.objects.filter(id=hid)
 
@@ -70,12 +70,12 @@ def newE(request):
             pKeyStr = key.publickey().exportKey('PEM')
             xord = sc.splitSK_RSA(key)
 
-            n = Encryption(id=hid, public_key=pKeyStr, private_key_part=xord[0], recovery=reqM, password=psw)
+            n = Encryption(id=hid, public_key=pKeyStr, private_key_part=xord[0], recovery=recM, password=psw)
             n.save()
 
-            ret_val = [{'P1K': xord[1]}]
+            ret_val = [{'Ans': "OK", 'PrKPart': xord[1], 'PK': pKeyStr}]
             return JsonResponse(ret_val, safe=False)
 
         else:
-            ret_val = [{'P1K': ""}]
+            ret_val = [{'Ans': "Duplicate"}]
             return JsonResponse(ret_val, safe=False)
