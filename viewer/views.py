@@ -1,54 +1,102 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from functools import wraps
 
 
+def session_decorator(function):
+    @wraps(function)
+    def wrapped(*args, **kwargs):
+        request = args[0]
+        if 'cloud_name' not in request.session:
+            request.session['cloud_name'] = ""
+            request.session['user_username'] = ""
+            request.session['cloud_galleries'] = []
+            request.session['gallery_location'] = ""
+            request.session['number_of_images'] = 0
+            request.session['number_of_pages'] = 0
+            request.session['current_page'] = 0
+            request.session['current_images'] = []
+        run = function(*args, **kwargs)
+        return run
+    return wrapped
+
+
+@session_decorator
 def index(request):
-    context = get_context()
+    context = get_context(request)
     return render(request, 'viewer/index.html', context)
 
+
+@session_decorator
 def open_page(request):
     active_page = request.GET.get('page_number')
-
-    ## realy change page
-
     if not active_page:
-        print('pao')
         active_page = 1
 
-    context = get_context()
+    # TODO get images on current page from cloud
+    images = ['viewer/img/image1.jpg', 'viewer/img/image2.jpg', 'viewer/img/image3.jpg',
+              'viewer/img/image4.jpg', 'viewer/img/image5.jpg', 'viewer/img/image6.jpg',
+              'viewer/img/image7.jpg', 'viewer/img/image8.jpg', 'viewer/img/image9.jpg']
+
+    request.session['current_page'] = int(active_page)
+    request.session['current_images'] = images
+    context = get_context(request)
     return render(request, 'viewer/index.html', context)
 
+
+@session_decorator
 def change_cloud(request):
     cloud_name = request.POST.get('cloud_name')
+    if cloud_name is not None:
+        # TODO get user's username or id from cloud
+        user = "Micko"
+        # TODO get folders containing displayable folders from cloud
+        folders = ["new_folder", "secureClouding", "slike sa mora"]
 
-    ## realy change cloud
+        request.session['cloud_name'] = cloud_name
+        request.session['user_username'] = user
+        request.session['cloud_galleries'] = folders
 
-    context = get_context()
-    return render(request, 'viewer/index.html', context)
+    return redirect('index', permanent=True)
 
 
+@session_decorator
 def change_gallery(request):
     gallery_name = request.POST.get('gallery_name')
+    if gallery_name is not None:
 
-    ## realy change gallery
+        # TODO get number of images in selected folder
+        images_no = 10
+        # TODO get number of pages for this folder (single page contains 15 images)
+        pages_no = 10
+        # TODO get images for this folder
+        images = ['viewer/img/image1.jpg', 'viewer/img/image2.jpg', 'viewer/img/image3.jpg',
+                  'viewer/img/image4.jpg', 'viewer/img/image5.jpg', 'viewer/img/image6.jpg',
+                  'viewer/img/image7.jpg', 'viewer/img/image8.jpg', 'viewer/img/image9.jpg']
 
-    context = get_context()
-    return render(request, 'viewer/index.html', context)
+        request.session['gallery_location'] = gallery_name
+        request.session['number_of_images'] = int(images_no)
+        request.session['number_of_pages'] = int(pages_no)
+        request.session['current_page'] = 1
+        request.session['current_images'] = images
+
+    return redirect('index', permanent=True)
 
 
 def close_session(request):
-
-    ## realy close session
-
-    context = get_context()
-    return render(request, 'viewer/index.html', context)
+    request.session.clear()
+    return redirect('index', permanent=True)
 
 
-def get_context():
+def get_context(request):
     context = {
-        "selected_drive": "google_drive",
-        "selected_gallery": "nothing",
-        "active_page": 7,
-        "total_pages": 42,
+        "selected_drive": request.session['cloud_name'],
+        "cloud_user": request.session['user_username'],
+        "folders_list":  request.session['cloud_galleries'],
+        "selected_gallery": request.session['gallery_location'],
+        "images_number": request.session['number_of_images'],
+        "total_pages": request.session['number_of_pages'],
+        "active_page": request.session['current_page'],
+        "images_list": request.session['current_images'],
     }
     return context

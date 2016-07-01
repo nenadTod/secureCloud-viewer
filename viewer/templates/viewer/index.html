@@ -1,88 +1,49 @@
 {% extends 'viewer/base.html' %}
-{% block title %}Secure Clouding{% endblock %}
 {% load staticfiles %}
 
-{% block content %}
+{% block paging %}
 
-    <div class="images-list">
-        <div class="image-item">
-            <a href="{% static 'viewer/img/image1.jpg' %}" title="Nova slika1" data-gallery>
-                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                <img class="single-image" src="{% static 'viewer/img/image1.jpg' %}" />
-            </a>
-        </div>
-        <div class="image-item">
-            <a href="{% static 'viewer/img/image2.jpg' %}" title="Nova slika2" data-gallery>
-                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                <img class="single-image" src="{% static 'viewer/img/image2.jpg' %}" />
-            </a>
-        </div>
-        <div class="image-item">
-            <a href="{% static 'viewer/img/image3.jpg' %}" title="Nova slika3 sa mnogo dugackim nazivom, ovo stavljam ovako
-            cito da bih video kako ce se ponasti celo polje...
+    <nav>
+        <form id="paging-form" method="get" action="{% url 'open_page' %}">
+            <input type="text" id="paging-form-page" name="page_number" value="{{ active_page }}" style="display: none;">
+            <ul class="pagination">
+                <li class="single-pager" id="first-page" value="-5"><span aria-label="Previous">&laquo;&laquo;</span></li>
+                <li class="single-pager" id="prev-page" value="-9"><span aria-label="Previous">&laquo;</span></li>
 
-            " data-gallery>
-                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                <img class="single-image" src="{% static 'viewer/img/image3.jpg' %}" />
-            </a>
-        </div>
-        <div class="image-item">
-            <a href="{% static 'viewer/img/image4.jpg' %}" title="Nova slika4" data-gallery>
-                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                <img class="single-image" src="{% static 'viewer/img/image4.jpg' %}" />
-            </a>
-        </div>
-        <div class="image-item">
-            <a href="{% static 'viewer/img/image5.jpg' %}" title="Nova slika5" data-gallery>
-                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                <img class="single-image" src="{% static 'viewer/img/image5.jpg' %}" />
-            </a>
-        </div>
-        <div class="image-item">
-            <a href="{% static 'viewer/img/image6.jpg' %}" title="Nova slika6" data-gallery>
-                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                <img class="single-image" src="{% static 'viewer/img/image6.jpg' %}" />
-            </a>
-        </div>
-        <div class="image-item">
-            <a href="{% static 'viewer/img/image7.jpg' %}" title="Nova slika7" data-gallery>
-                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                <img class="single-image" src="{% static 'viewer/img/image7.jpg' %}" />
-            </a>
-        </div>
-        <div class="image-item">
-            <a href="{% static 'viewer/img/image8.jpg' %}" title="Nova slika8" data-gallery>
-                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                <img class="single-image" src="{% static 'viewer/img/image8.jpg' %}" />
-            </a>
-        </div>
-        <div class="image-item">
-            <a href="{% static 'viewer/img/image9.jpg' %}" title="Nova slika9" data-gallery>
-                <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
-                <img class="single-image" src="{% static 'viewer/img/image9.jpg' %}" />
-            </a>
-        </div>
+                {% if active_page < 4 %}
+                    <li class="single-pager" value="1"><span aria-label="Previous">1</span></li>
+                    <li class="single-pager" value="2"><span aria-label="Previous">2</span></li>
+                    <li class="single-pager" value="3"><span aria-label="Previous">3</span></li>
+                    <li class="single-pager" value="4"><span aria-label="Previous">4</span></li>
+                    <li class="single-pager" value="5"><span aria-label="Previous">5</span></li>
+                    <li class="disabled"><span>...</span></li>
+                {% elif total_pages|add:"-3" < active_page %}
+                    <li class="disabled"><span>...</span></li>
+                    <li class="single-pager" value="{{ total_pages|add:"-4" }}"><span aria-label="Previous">{{ total_pages|add:"-4" }}</span></li>
+                    <li class="single-pager" value="{{ total_pages|add:"-3" }}"><span aria-label="Previous">{{ total_pages|add:"-3" }}</span></li>
+                    <li class="single-pager" value="{{ total_pages|add:"-2" }}"><span aria-label="Previous">{{ total_pages|add:"-2" }}</span></li>
+                    <li class="single-pager" value="{{ total_pages|add:"-1" }}"><span aria-label="Previous">{{ total_pages|add:"-1" }}</span></li>
+                    <li class="single-pager" value="{{ total_pages }}"><span aria-label="Previous">{{ total_pages }}</span></li>
+                {% else %}
+                    <li class="disabled"><span>...</span></li>
+                    <li class="single-pager" value="{{ active_page|add:"-2" }}"><span aria-label="Previous">{{ active_page|add:"-2" }}</span></li>
+                    <li class="single-pager" value="{{ active_page|add:"-1" }}"><span aria-label="Previous">{{ active_page|add:"-1" }}</span></li>
+                    <li class="single-pager" value="{{ active_page }}"><span aria-label="Previous">{{ active_page }}</span></li>
+                    <li class="single-pager" value="{{ active_page|add:"1" }}"><span aria-label="Previous">{{ active_page|add:"1" }}</span></li>
+                    <li class="single-pager" value="{{ active_page|add:"2" }}"><span aria-label="Previous">{{ active_page|add:"2" }}</span></li>
+                    <li class="disabled"><span>...</span></li>
+                {% endif %}
 
-    </div>
+                <li class="single-pager" id="next-page" value="-11"><span aria-label="Previous">&raquo;</span></li>
+                <li class="single-pager" id="last-page" value="-15"><span aria-label="Previous">&raquo;&raquo;</span></li>
 
-    <div id="blueimp-gallery" class="blueimp-gallery">
-        <div class="slides"></div>
-        <div class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-part-side prev">
-                        <span class="glyphicon glyphicon-chevron-left mybutton"></span>
-                    </div>
-                    <div class="modal-body modal-part-center next"></div>
-                    <div class="modal-part-side next">
-                        <span class="glyphicon glyphicon-chevron-right mybutton"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
-    <script src={% static 'viewer/js/bootstrap-image-gallery.min.js' %}></script>
+                <script type="text/javascript">
+                    var active = "{{active_page}}";
+                    var total = "{{total_pages}}";
+                    set_paging(active, total);
+                </script>
+            </ul>
+        </form>
+    </nav>
 
 {% endblock %}

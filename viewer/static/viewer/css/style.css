@@ -37,8 +37,12 @@ h2 {
 }
 
 .navbar-brand,
-.navbar-form{
+.navbar-form {
     padding-top: 1.2em !important;
+}
+
+.select-control {
+	width: 12em !important;
 }
 
 .middle {
@@ -87,7 +91,7 @@ h2 {
 }
 
 .details-table td {
-	width: 13em;
+	width: 12em;
 	padding-top: 0.6em;
 	padding-bottom: 0.6em;
 	font-size: 1.2em;

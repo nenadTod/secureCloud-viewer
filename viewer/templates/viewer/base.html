@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
+    <title>Secure Clouding</title>
     {% load staticfiles %}
     <link href='https://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{% static 'viewer/css/style.css' %}"/>
@@ -20,7 +20,7 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
 
-                <a href="{% url 'viewer.views.index' %}">
+                <a href="{% url 'index' %}">
                     <div class="navbar-header">
                         <img src="{% static 'viewer/img/secure_clouding64.png' %}">
                     </div>
@@ -29,13 +29,13 @@
                     </div>
                 </a>
 
-                <form class="navbar-form navbar-right" method="post" action="{% url 'viewer.views.close_session' %}">
+                <form class="navbar-form navbar-right" method="post" action="{% url 'close_session' %}">
                     <button type="submit" class="btn btn-default" title="Close Current Session"><span class="glyphicon glyphicon-off"></span></button>
                 </form>
 
-                <form class="navbar-form navbar-right" method="post" action="{% url 'viewer.views.change_cloud' %}">
+                <form class="navbar-form navbar-right" method="post" action="{% url 'change_cloud' %}">
                     <div class="form-group">
-                        <select type="text" id="cloud_select" class="form-control" name="cloud_name" value="{{ selected_drive }}">
+                        <select type="text" id="cloud_select" class="form-control select-control" name="cloud_name" value="{{ selected_drive }}">
                             <option value="google_drive">Google Drive</option>
                             <option value="dropbox">DropBox</option>
                             <option value="one_drive">One Drive</option>
@@ -45,16 +45,23 @@
                 </form>
 
 
-                <form class="navbar-form navbar-right" method="post" action="{% url 'viewer.views.change_gallery' %}">
+                <form class="navbar-form navbar-right" method="post" action="{% url 'change_gallery' %}">
                     <div class="form-group">
-                        <select type="text" id="gallery_select" class="form-control" name="gallery_name" value="{{ selected_gallery }}">
-                            <option value="secure_clouding">secure_clouding</option>
-                            <option value="folder1-secure">folder1-secure</option>
-                            <option value="new_folder">new_folder</option>
+                        <select type="text" id="gallery_select" class="form-control select-control gallery-choose" name="gallery_name" value="{{ selected_gallery }}">
+
+                            {% for folder in folders_list %}
+                                <option value="{{ folder }}">{{ folder }}</option>
+                            {% endfor %}
+
                         </select>
                     </div>
-					<button type="submit" class="btn btn-default" title="Browse Gallery">Browse gallery</button>
+					<button type="submit" class="btn btn-default gallery-choose" title="Browse Gallery">Browse gallery</button>
                 </form>
+
+                <script type="text/javascript">
+                    if ({{folders_list}})
+                        $('.gallery-choose').attr("disabled", true);
+                </script>
 
             </div>
         </nav>
@@ -69,12 +76,14 @@
 				</div>
 
 				<div class="panel-body">
-                    <!--<p class="no-content-message">There is no cloud selected</p>-->
-
-					<table class="details-table">
-						<tr><th>Cloud:</th><td id="cloud_select_helper">{{ selected_drive }}</td></tr>
-						<tr><th>Username:</th><td></td></tr>
-					</table>
+                    {% if selected_drive %}
+                        <table class="details-table">
+                            <tr><th>Cloud:</th><td id="cloud_select_helper">{{ selected_drive }}</td></tr>
+                            <tr><th>Username:</th><td>{{ cloud_user }}</td></tr>
+                        </table>
+                    {% else %}
+                        <p class="no-content-message">There is no cloud selected</p>
+                    {% endif %}
 
 				</div>
 			</div>
@@ -86,14 +95,16 @@
 				</div>
 
 				<div class="panel-body">
-                    <!--<p class="no-content-message">There is no gallery selected</p>-->
-
-					<table class="details-table">
-						<tr><th>Location:</th><td id="gallery_select_helper">new_folder</td></tr>
-						<tr><th>Pictures no:</th><td></td></tr>
-						<tr><th>Pages no:</th><td></td></tr>
-						<tr><th>Current page:</th><td></td></tr>
-					</table>
+                    {% if selected_gallery %}
+                        <table class="details-table">
+                            <tr><th>Location:</th><td id="gallery_select_helper">{{ selected_gallery }}</td></tr>
+                            <tr><th>Pictures no:</th><td>{{ images_number }}</td></tr>
+                            <tr><th>Pages no:</th><td>{{ total_pages }}</td></tr>
+                            <tr><th>Current page:</th><td>{{ active_page }}</td></tr>
+                        </table>
+                    {% else %}
+                        <p class="no-content-message">There is no gallery selected</p>
+                    {% endif %}
 				</div>
 			</div>
 		</div>
@@ -106,57 +117,46 @@
                 </div>
 
                 <div class="panel-body">
-                    <!--<p class="no-content-message">There is no cloud selected</p>-->
 
-                    {% block content %}
-                    {% endblock %}
+                    {% if images_list %}
+                        <div class="images-list">
+                            {% for image in images_list %}
+                                <div class="image-item">
+                                    <a href="{% static image %}" data-gallery>
+                                        <img class="over-image" src="{% static 'viewer/img/overimage.png' %}" />
+                                        <img class="single-image" src="{% static image %}" />
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div id="blueimp-gallery" class="blueimp-gallery">
+                            <div class="slides"></div>
+                            <div class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-part-side prev">
+                                            <span class="glyphicon glyphicon-chevron-left mybutton"></span>
+                                        </div>
+                                        <div class="modal-body modal-part-center next"></div>
+                                        <div class="modal-part-side next">
+                                            <span class="glyphicon glyphicon-chevron-right mybutton"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+                        <script src={% static 'viewer/js/bootstrap-image-gallery.min.js' %}></script>
+                    {% else %}
+                        <p class="no-content-message-big">There is no gallery selected</p>
+                    {% endif %}
 
                 </div>
-                {% if active_page and total_pages and active_page <= total_pages %}
+                {% if active_page and total_pages and active_page <= total_pages and 0 < active_page %}
                     <div class="text-center panel-footer">
-
-                        <nav>
-                            <form id="paging-form" method="get" action="{% url 'viewer.views.open_page' %}">
-                                <input type="text" id="paging-form-page" name="page_number" value="{{ active_page }}" style="display: none;">
-                                <ul class="pagination">
-                                    <li class="single-pager" id="first-page" value="-5"><span aria-label="Previous">&laquo;&laquo;</span></li>
-                                    <li class="single-pager" id="prev-page" value="-9"><span aria-label="Previous">&laquo;</span></li>
-
-                                    {% if active_page < 4 %}
-                                        <li class="single-pager" value="1"><span aria-label="Previous">1</span></li>
-                                        <li class="single-pager" value="2"><span aria-label="Previous">2</span></li>
-                                        <li class="single-pager" value="3"><span aria-label="Previous">3</span></li>
-                                        <li class="single-pager" value="4"><span aria-label="Previous">4</span></li>
-                                        <li class="single-pager" value="5"><span aria-label="Previous">5</span></li>
-                                        <li class="disabled"><span>...</span></li>
-                                    {% elif total_pages|add:"-3" < active_page %}
-                                        <li class="disabled"><span>...</span></li>
-                                        <li class="single-pager" value="{{ total_pages|add:"-4" }}"><span aria-label="Previous">{{ total_pages|add:"-4" }}</span></li>
-                                        <li class="single-pager" value="{{ total_pages|add:"-3" }}"><span aria-label="Previous">{{ total_pages|add:"-3" }}</span></li>
-                                        <li class="single-pager" value="{{ total_pages|add:"-2" }}"><span aria-label="Previous">{{ total_pages|add:"-2" }}</span></li>
-                                        <li class="single-pager" value="{{ total_pages|add:"-1" }}"><span aria-label="Previous">{{ total_pages|add:"-1" }}</span></li>
-                                        <li class="single-pager" value="{{ total_pages }}"><span aria-label="Previous">{{ total_pages }}</span></li>
-                                    {% else %}
-                                        <li class="disabled"><span>...</span></li>
-                                        <li class="single-pager" value="{{ active_page|add:"-2" }}"><span aria-label="Previous">{{ active_page|add:"-2" }}</span></li>
-                                        <li class="single-pager" value="{{ active_page|add:"-1" }}"><span aria-label="Previous">{{ active_page|add:"-1" }}</span></li>
-                                        <li class="single-pager" value="{{ active_page }}"><span aria-label="Previous">{{ active_page }}</span></li>
-                                        <li class="single-pager" value="{{ active_page|add:"1" }}"><span aria-label="Previous">{{ active_page|add:"1" }}</span></li>
-                                        <li class="single-pager" value="{{ active_page|add:"2" }}"><span aria-label="Previous">{{ active_page|add:"2" }}</span></li>
-                                        <li class="disabled"><span>...</span></li>
-                                    {% endif %}
-
-                                    <li class="single-pager" id="next-page" value="-11"><span aria-label="Previous">&raquo;</span></li>
-                                    <li class="single-pager" id="last-page" value="-15"><span aria-label="Previous">&raquo;&raquo;</span></li>
-
-                                    <script type="text/javascript">
-                                        var active = "{{active_page}}";
-                                        var total = "{{total_pages}}";
-                                        set_paging(active, total);
-                                    </script>
-                                </ul>
-                            </form>
-                        </nav>
+                        {% block paging %}
+                        {% endblock %}
                     </div>
                 {% endif %}
 
