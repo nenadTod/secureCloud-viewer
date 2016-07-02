@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'djangosecure',
+    'sslserver',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -134,8 +136,9 @@ STATIC_URL = '/static/'
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-# SECURE_PROXY_SSL_HEADER = True
-# SECURE_SSL_REDIRECT = True    # ovo baca internal server error
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000
 
-#CSRF_COOKIE_SECURE = True
-#SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True

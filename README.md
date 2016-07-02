@@ -11,7 +11,8 @@ Web application that decrypts content stored on (potentially any) cloud, and pre
 7. Set "Manage scripts" to "manage.py"
 8. In "PyCharm Professional" open "Run"->"Edit Configurations..."
 9. Add new "Django server"
-10. Type "Host": 127.0.0.1 and "Port": arbitrary value (recommended: 8000)
+10. Enter "Host": 127.0.0.1 and "Port": arbitrary value (recommended: 8000)
+11. Check "Custom run command", and type "runsslserver" (novo)
 <br/><br/>
 Now you can Run and Debug server from PyCharm
 
@@ -24,3 +25,5 @@ Now you can Run and Debug server from PyCharm
   - pycrypto 2.6.1
   - djangorestframework 3.3.3
   - bcrypt 3.0.0
+  - django-secure 1.0.1 (novo)
+  - django-sslserver 0.19 (novo)
