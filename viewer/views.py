@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from functools import wraps
 
+from django.views.decorators.csrf import csrf_protect
+
 
 def session_decorator(function):
     @wraps(function)
@@ -48,6 +50,7 @@ def open_page(request):
     return render(request, 'viewer/index.html', context)
 
 
+@csrf_protect
 @session_decorator
 def change_cloud(request):
     cloud_name = request.POST.get('cloud_name')
@@ -64,6 +67,7 @@ def change_cloud(request):
     return redirect('index', permanent=True)
 
 
+@csrf_protect
 @session_decorator
 def change_gallery(request):
     gallery_name = request.POST.get('gallery_name')
@@ -87,6 +91,7 @@ def change_gallery(request):
     return redirect('index', permanent=True)
 
 
+@csrf_protect
 def close_session(request):
     request.session.clear()
     return redirect('index', permanent=True)
