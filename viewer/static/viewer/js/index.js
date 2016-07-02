@@ -47,7 +47,12 @@ function set_paging(active, total) {
 
     var paging = $(".pagination");
 
-    if (active == 1) {
+    if (active == 1 && active == total) {
+        $(paging).find("#first-page").addClass("disabled");
+        $(paging).find("#prev-page").addClass("disabled");
+        $(paging).find("#last-page").addClass("disabled");
+        $(paging).find("#next-page").addClass("disabled");
+    } else if (active == 1) {
         $(paging).find("#first-page").addClass("disabled");
         $(paging).find("#prev-page").addClass("disabled");
     } else if (active == total) {

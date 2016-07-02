@@ -32,6 +32,10 @@ def open_page(request):
     active_page = request.GET.get('page_number')
     if not active_page:
         active_page = 1
+    active_page = int(active_page)
+    pages_no = int(request.session['number_of_pages'])
+    if active_page < 1 or pages_no < active_page:
+        active_page = 1
 
     # TODO get images on current page from cloud
     images = ['viewer/img/image1.jpg', 'viewer/img/image2.jpg', 'viewer/img/image3.jpg',
@@ -68,7 +72,7 @@ def change_gallery(request):
         # TODO get number of images in selected folder
         images_no = 10
         # TODO get number of pages for this folder (single page contains 15 images)
-        pages_no = 10
+        pages_no = 3
         # TODO get images for this folder
         images = ['viewer/img/image1.jpg', 'viewer/img/image2.jpg', 'viewer/img/image3.jpg',
                   'viewer/img/image4.jpg', 'viewer/img/image5.jpg', 'viewer/img/image6.jpg',

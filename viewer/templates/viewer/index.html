@@ -10,13 +10,19 @@
                 <li class="single-pager" id="first-page" value="-5"><span aria-label="Previous">&laquo;&laquo;</span></li>
                 <li class="single-pager" id="prev-page" value="-9"><span aria-label="Previous">&laquo;</span></li>
 
-                {% if active_page < 4 %}
+                {% if active_page < 4 or total_pages <= 5 %}
                     <li class="single-pager" value="1"><span aria-label="Previous">1</span></li>
+                    {% if total_pages > 1 %}
                     <li class="single-pager" value="2"><span aria-label="Previous">2</span></li>
+                    {% endif %}{% if total_pages > 2 %}
                     <li class="single-pager" value="3"><span aria-label="Previous">3</span></li>
+                    {% endif %}{% if total_pages > 3 %}
                     <li class="single-pager" value="4"><span aria-label="Previous">4</span></li>
+                    {% endif %}{% if total_pages > 4 %}
                     <li class="single-pager" value="5"><span aria-label="Previous">5</span></li>
+                    {% endif %}{% if total_pages > 5 %}
                     <li class="disabled"><span>...</span></li>
+                    {% endif %}
                 {% elif total_pages|add:"-3" < active_page %}
                     <li class="disabled"><span>...</span></li>
                     <li class="single-pager" value="{{ total_pages|add:"-4" }}"><span aria-label="Previous">{{ total_pages|add:"-4" }}</span></li>
