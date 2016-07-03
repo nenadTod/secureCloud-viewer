@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from functools import wraps
+from cloud_API.dropbox_API import DropboxAPI
+from cloud_API.one_drive_API import OneDriveAPI
+from cloud_API.google_drive_API import GoogleDriveAPI
 
 from django.views.decorators.csrf import csrf_protect
 
@@ -55,13 +58,28 @@ def open_page(request):
 def change_cloud(request):
     cloud_name = request.POST.get('cloud_name')
     if cloud_name is not None:
-        # TODO get user's username or id from cloud
+
         user = "Micko"
-        # TODO get folders containing displayable folders from cloud
-        folders = ["new_folder", "secureClouding", "slike sa mora"]
+        if cloud_name == 'google_drive':
+            drive = GoogleDriveAPI()
+        elif cloud_name == 'one_drive':
+            drive = OneDriveAPI()
+        else:
+            drive = DropboxAPI()
+
+        drive.authenticate()
+        folders = []
+
+        shared = drive.shared_with_me()
+        for sh in shared:
+            folders.append(sh['name'])
 
         request.session['cloud_name'] = cloud_name
-        request.session['user_username'] = user
+        try:
+            request.session['user_username'] = drive.get_email()
+        except:
+            request.session['user_username'] = drive.get_user_data()
+
         request.session['cloud_galleries'] = folders
 
     return redirect('index', permanent=True)
