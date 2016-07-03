@@ -42,7 +42,7 @@ class OneDriveAPI(AbstractDriveAPI):
         )
 
         data = json.loads(content)
-        return data['id']
+        return data['id'], data['name']
 
     def upload(self, files, folder_name):
 

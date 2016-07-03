@@ -74,12 +74,10 @@ def change_cloud(request):
         for sh in shared:
             folders.append(sh['name'])
 
-        request.session['cloud_name'] = cloud_name
-        try:
-            request.session['user_username'] = drive.get_email()
-        except:
-            request.session['user_username'] = drive.get_user_data()
+        d, user = drive.get_user_data()
 
+        request.session['cloud_name'] = cloud_name
+        request.session['user_username'] = user
         request.session['cloud_galleries'] = folders
 
     return redirect('index', permanent=True)
