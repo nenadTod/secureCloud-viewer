@@ -7,6 +7,7 @@ from cloud_API.google_drive_API import GoogleDriveAPI
 
 from django.views.decorators.csrf import csrf_protect
 
+drive = None
 
 def session_decorator(function):
     @wraps(function)
@@ -15,12 +16,13 @@ def session_decorator(function):
         if 'cloud_name' not in request.session:
             request.session['cloud_name'] = ""
             request.session['user_username'] = ""
-            request.session['cloud_galleries'] = []
+            request.session['cloud_galleries'] = {}
             request.session['gallery_location'] = ""
             request.session['number_of_images'] = 0
             request.session['number_of_pages'] = 0
             request.session['current_page'] = 0
             request.session['current_images'] = []
+            request.session['drive'] = {}
         run = function(*args, **kwargs)
         return run
     return wrapped
@@ -58,7 +60,7 @@ def open_page(request):
 def change_cloud(request):
     cloud_name = request.POST.get('cloud_name')
     if cloud_name is not None:
-
+        global drive
         user = "Micko"
         if cloud_name == 'google_drive':
             drive = GoogleDriveAPI()
@@ -68,14 +70,13 @@ def change_cloud(request):
             drive = DropboxAPI()
 
         drive.authenticate()
-        folders = []
+        folders = drive.shared_with_me()
 
-        shared = drive.shared_with_me()
-        for sh in shared:
-            folders.append(sh['name'])
+        folders.update(drive.list_subfolders())
 
         d, user = drive.get_user_data()
 
+        # request.session['drive'] = drive
         request.session['cloud_name'] = cloud_name
         request.session['user_username'] = user
         request.session['cloud_galleries'] = folders
@@ -88,6 +89,9 @@ def change_cloud(request):
 def change_gallery(request):
     gallery_name = request.POST.get('gallery_name')
     if gallery_name is not None:
+        global drive
+        # drive = request.session.get('drive')
+        drive.download_files(gallery_name, 'tu')
 
         # TODO get number of images in selected folder
         images_no = 10

@@ -52,8 +52,8 @@
                     <div class="form-group">
                         <select type="text" id="gallery_select" class="form-control select-control gallery-choose" name="gallery_name" value="{{ selected_gallery }}">
 
-                            {% for folder in folders_list %}
-                                <option value="{{ folder }}">{{ folder }}</option>
+                            {% for key, value in folders_list.items %}
+                                <option value="{{ value }}">{{ key }}</option>
                             {% endfor %}
 
                         </select>

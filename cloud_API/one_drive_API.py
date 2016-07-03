@@ -103,7 +103,7 @@ class OneDriveAPI(AbstractDriveAPI):
         )
 
         data = json.loads(content)
-        ret = []
+        ret = {}
         for folder in data['value']:
             folder_name = folder['remoteItem']['name']
             folder_id = folder['remoteItem']['id']
@@ -113,7 +113,8 @@ class OneDriveAPI(AbstractDriveAPI):
                 collection = self.client.item(drive=dr, id=folder_id).children.get()
             except:
                 continue
-            ret.append({'name': folder_name, 'id': folder_id, 'owner': owner})
+            # ret.append({'name': folder_name, 'id': folder_id, 'owner': owner})
+            ret[folder_name + ' (' + owner + ')'] = folder_id
 
         return ret
 
