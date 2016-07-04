@@ -74,11 +74,11 @@ class SCDecryptor:
 
         if not(private1_exists and private2_exists and list_file_exists):
             # ovde neka forma
-            return
+            return None, None
 
         if os.stat(meta_pub).st_size == 0:
             # ovde neka forma
-            return
+            return None, None
 
         with open(meta_pri, 'r') as fhI:
             key_part_1 = fhI.read()
@@ -115,7 +115,7 @@ class SCDecryptor:
 
         return True
 
-    def decryptShared(self, dir_path,  gallery_name, drive):
+    def decryptShared(self, dir_path, dir_path_view, gallery_name, drive):
 
         user_id = drive.get_user_id_by_folder_id(gallery_name)
         hid = SHA256.new(user_id).hexdigest()
@@ -123,7 +123,9 @@ class SCDecryptor:
         if len(ret) == 0:
             return None
 
-        user_temp_dir = dir_path + str(uuid.uuid1())
+        uid = uuid.uuid1()
+        user_temp_dir = dir_path + str(uid)
+        user_temp_dir_view = dir_path_view + str(uid)
         if not os.path.exists(user_temp_dir):
             os.makedirs(user_temp_dir)
 
@@ -165,6 +167,7 @@ class SCDecryptor:
         sc = SCCrypto()
         key = sc.mergeSK_RSA(key_part_1, key_part_2)
 
+        ret_img_location = []
         with open(meta_pub, 'r') as fhI:
 
             i = 0
@@ -187,6 +190,8 @@ class SCDecryptor:
                         dec_pic_data_bin = aes.decrypt(enc_pic_data_bin)
 
                         location = user_temp_dir + "/" + line_content[0]
+                        location_view = user_temp_dir_view + "/" + line_content[0]
+                        ret_img_location.append(location_view)
                         with open(location, 'wb') as fhO:
                             fhO.write(dec_pic_data_bin)
 
@@ -195,7 +200,7 @@ class SCDecryptor:
                     if i == 9:
                         break
 
-        return user_temp_dir
+        return user_temp_dir, ret_img_location
 
 
 
