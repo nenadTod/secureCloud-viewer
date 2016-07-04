@@ -96,7 +96,9 @@ def change_gallery(request):
         else:
             drive = request.session.get('drive')
 
-        drive.download_file(gallery_name, 'meta1-de.txt', 'tu')
+
+        drive.download_shared_file(gallery_name, 'meta1-de.txt', 'tu')
+        # or drive.download_file(gallery_name, 'meta1-de.txt', 'tu')  provali koje ti treba :D
 
         # TODO get number of images in selected folder
         images_no = 10
