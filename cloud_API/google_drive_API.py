@@ -202,22 +202,28 @@ class GoogleDriveAPI(AbstractDriveAPI):
         return True
 
     def download_shared_file(self, folder_id, file_name, download_path):
-        dr = folder_id.split('!')[0]
-        folder = self.client.item(drive=dr, id=folder_id).children.get()
 
-        for item in folder:
-            if item.file is not None and item.name.lower() == file_name.lower():
-                self.client.item(drive=dr, id=item.id).download(download_path + "/" + item.name.lower())
+        ret = {}
+        d, email = self.get_user_data()
+        file_list = self.drive.ListFile({'q': "not '" + email + "' in owners and '" + folder_id + "' in parents and trashed=false"}).GetList()
+        for file1 in file_list:
+            if file1['title'] == file_name:
+                file2 = self.drive.CreateFile({'id': file1['id']})
+                file2.GetContentFile(download_path + '/' + file1['title'])
 
         return True
 
     def get_user_id_by_folder_id(self, folder_id):
-        file_list = self.drive.ListFile({'q': "'" + str(
-            folder_id) + "' in parents and trashed=false and mimeType='application/vnd.google-apps.folder'"}).GetList()
+        h = httplib2.Http()
+        uri = 'https://www.googleapis.com/drive/v2/files/' + str(folder_id)
+        resp, content = h.request(
+            uri=uri,
+            method='GET',
+            headers={'Authorization': 'Bearer ' + self.access_token}
+        )
+        data = json.loads(content)
 
-        for file in file_list:
-            print 's'
-
+        return data['owners'][0]['permissionId']
 
 
     def _authentication_main_folder(self):
