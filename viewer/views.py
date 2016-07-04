@@ -89,8 +89,14 @@ def change_gallery(request):
     gallery_name = request.POST.get('gallery_name')
     if gallery_name is not None:
 
-        drive = request.session.get('drive')
-        drive.download_files(gallery_name, 'tu')
+        cloud_name = request.session['cloud_name']
+        if cloud_name == 'google_drive':
+            drive = GoogleDriveAPI()
+            drive.authenticate()
+        else:
+            drive = request.session.get('drive')
+
+        drive.download_file(gallery_name, 'meta1-de.txt', 'tu')
 
         # TODO get number of images in selected folder
         images_no = 10
