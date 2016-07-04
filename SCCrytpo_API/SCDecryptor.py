@@ -34,7 +34,7 @@ class SCDecryptor:
 
     # bice izmena posle, zbog nacina downloada.
     def decryptLocal(self, location_folder_value, location_folder_name, download_path, drive):
-        user_id = drive.get_user_data()
+        user_id, bl = drive.get_user_data()
 
         meta_pri = self.temp_dir + "/" + self.temp_meta1D
         meta_pub = self.temp_dir + "/" + self.temp_meta1E
@@ -113,7 +113,7 @@ class SCDecryptor:
 
     def decryptShared(self, location_folder_value, location_folder_name, download_path, drive):
 
-        user_id = drive.get_user_data()
+        user_id, bl = drive.get_user_data()
         hid = SHA256.new(user_id).hexdigest()
         ret = Encryption.objects.filter(id=hid)
         if len(ret) == 0:
