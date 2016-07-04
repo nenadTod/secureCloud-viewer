@@ -7,7 +7,6 @@ from cloud_API.google_drive_API import GoogleDriveAPI
 
 from django.views.decorators.csrf import csrf_protect
 
-drive = None
 
 def session_decorator(function):
     @wraps(function)
@@ -60,7 +59,7 @@ def open_page(request):
 def change_cloud(request):
     cloud_name = request.POST.get('cloud_name')
     if cloud_name is not None:
-        global drive
+
         user = "Micko"
         if cloud_name == 'google_drive':
             drive = GoogleDriveAPI()
@@ -76,7 +75,7 @@ def change_cloud(request):
 
         d, user = drive.get_user_data()
 
-        # request.session['drive'] = drive
+        request.session['drive'] = drive
         request.session['cloud_name'] = cloud_name
         request.session['user_username'] = user
         request.session['cloud_galleries'] = folders
@@ -89,8 +88,8 @@ def change_cloud(request):
 def change_gallery(request):
     gallery_name = request.POST.get('gallery_name')
     if gallery_name is not None:
-        global drive
-        # drive = request.session.get('drive')
+
+        drive = request.session.get('drive')
         drive.download_files(gallery_name, 'tu')
 
         # TODO get number of images in selected folder

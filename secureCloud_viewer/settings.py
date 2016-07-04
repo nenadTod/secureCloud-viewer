@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'djangosecure',
     'sslserver',
 ]
-
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
