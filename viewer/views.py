@@ -99,6 +99,7 @@ def change_gallery(request):
 
         drive.download_shared_file(gallery_name, 'meta1-de.txt', 'tu')
         # or drive.download_file(gallery_name, 'meta1-de.txt', 'tu')  provali koje ti treba :D
+        user_id = drive.get_user_id_by_folder_id(gallery_name)
 
         # TODO get number of images in selected folder
         images_no = 10

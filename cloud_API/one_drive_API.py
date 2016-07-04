@@ -148,6 +148,10 @@ class OneDriveAPI(AbstractDriveAPI):
 
         return True
 
+    def get_user_id_by_folder_id(self, folder_id):
+        dr = folder_id.split('!')[0]
+        return dr.lower()
+
     def get_meta_file(self, folder_name, save_to_folder, meta_type):
         if meta_type == 1:
             name = 'meta1-en.txt'
