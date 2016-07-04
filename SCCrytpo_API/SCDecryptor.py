@@ -32,6 +32,10 @@ class SCDecryptor:
         self.meta1EEnum = 1
         self.meta1DEnum = 2
 
+        self.meta2E = 'meta2-en.txt'
+        self.meta2D = 'meta2-de.txt'
+        self.meta2EEnum = 3
+        self.meta2DEnum = 4
     # bice izmena posle, zbog nacina downloada.
     def decryptLocal(self, location_folder_value, location_folder_name, download_path, drive):
         user_id, bl = drive.get_user_data()
@@ -111,23 +115,36 @@ class SCDecryptor:
 
         return True
 
-    def decryptShared(self, location_folder_value, location_folder_name, download_path, drive):
+    def decryptShared(self, dir_path,  gallery_name, drive):
 
-        user_id, bl = drive.get_user_data()
+        user_id = drive.get_user_id_by_folder_id(gallery_name)
         hid = SHA256.new(user_id).hexdigest()
         ret = Encryption.objects.filter(id=hid)
         if len(ret) == 0:
             return None
 
-        user_temp_dir = uuid.uuid1()
+        user_temp_dir = dir_path + str(uuid.uuid1())
         if not os.path.exists(user_temp_dir):
             os.makedirs(user_temp_dir)
 
-        meta_pri = user_temp_dir + "/" + self.temp_meta1D
-        meta_pub = user_temp_dir + "/" + self.temp_meta1E
+        meta_pri = user_temp_dir + "/" + self.meta2D
+        meta_pub = user_temp_dir + "/" + self.meta2E
 
-        drive.get_meta_file(location_folder_name, user_temp_dir, self.meta1DEnum)
-        drive.get_meta_file(location_folder_name, user_temp_dir, self.meta1EEnum)
+        cloud_user_id, bl = drive.get_user_data()
+
+        same_user = False
+        if cloud_user_id == user_id:
+            same_user = True
+
+        # drive.download_file(gallery_name, 'slika.jpg', 'viewer/static/viewer/img')
+        # drive.download_shared_file(gallery_name, 'meta1-de.txt', 'tu')
+
+        if same_user:
+            drive.download_file(gallery_name, self.meta2D, user_temp_dir)
+            drive.download_file(gallery_name, self.meta2E, user_temp_dir)
+        else:
+            drive.download_shared_file(gallery_name, self.meta2D, user_temp_dir)
+            drive.download_shared_file(gallery_name, self.meta2E, user_temp_dir)
 
         private_exists = False
         if os.path.exists(meta_pri) and os.stat(meta_pri).st_size != 0:
@@ -143,7 +160,7 @@ class SCDecryptor:
         with open(meta_pri, 'r') as fhI:
             key_part_1 = fhI.read()
 
-        key_part_2 = ret.private_key_part
+        key_part_2 = ret[0].private_key_part
 
         sc = SCCrypto()
         key = sc.mergeSK_RSA(key_part_1, key_part_2)
@@ -157,16 +174,19 @@ class SCDecryptor:
                     dsk = key.decrypt(sc.b642bin(line_content[0]))
                 else:
 
-                    drive.download_file(location_folder_value, line_content[0], self.temp_dir)
+                    if same_user:
+                        drive.download_file(gallery_name, line_content[0], user_temp_dir)
+                    else:
+                        drive.download_shared_file(gallery_name, line_content[0], user_temp_dir)
 
-                    with open(self.temp_dir + "/" + line_content[0], 'r') as fhI2:
+                    with open(user_temp_dir + "/" + line_content[0], 'r') as fhI2:
                         enc_pic_data_hex = fhI2.read()
                         enc_pic_data_bin = sc.b642bin(enc_pic_data_hex)
 
                         aes = AES.new(dsk, AES.MODE_CFB, sc.b642bin(line_content[1]))
                         dec_pic_data_bin = aes.decrypt(enc_pic_data_bin)
 
-                        location = download_path + "/" + line_content[0]
+                        location = user_temp_dir + "/" + line_content[0]
                         with open(location, 'wb') as fhO:
                             fhO.write(dec_pic_data_bin)
 

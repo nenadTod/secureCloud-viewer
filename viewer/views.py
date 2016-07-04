@@ -4,8 +4,9 @@ from functools import wraps
 from cloud_API.dropbox_API import DropboxAPI
 from cloud_API.one_drive_API import OneDriveAPI
 from cloud_API.google_drive_API import GoogleDriveAPI
-
+import os
 from django.views.decorators.csrf import csrf_protect
+from SCCrytpo_API.SCDecryptor import SCDecryptor
 
 
 def session_decorator(function):
@@ -96,9 +97,16 @@ def change_gallery(request):
         else:
             drive = request.session.get('drive')
 
+        dir_path = "viewer/static/user_data/"
+
+        #drive.download_shared_file(gallery_name, 'meta1-de.txt', temp_dir)
+        scd = SCDecryptor()
+        ret_val = scd.decryptShared(dir_path, gallery_name, drive)
+
+
         # drive.download_file(gallery_name, 'slika.jpg', 'viewer/static/viewer/img')
-        drive.download_shared_file(gallery_name, 'meta1-de.txt', 'tu')
-        # or drive.download_file(gallery_name, 'meta1-de.txt', 'tu')  provali koje ti treba :D
+        #drive.download_shared_file(gallery_name, 'meta1-de.txt', 'tu')
+        #drive.download_file(gallery_name, 'test2.jpg', temp_dir)
         user_id = drive.get_user_id_by_folder_id(gallery_name)
 
         # TODO get number of images in selected folder
@@ -106,7 +114,7 @@ def change_gallery(request):
         # TODO get number of pages for this folder (single page contains 15 images)
         pages_no = 3
         # TODO get images for this folder
-        images = ['viewer/img/image1.jpg', 'viewer/img/image2.jpg', 'viewer/img/image3.jpg',
+        images = ['user_data/tu/test2.jpg', 'viewer/img/image2.jpg', 'viewer/img/image3.jpg',
                   'viewer/img/image4.jpg', 'viewer/img/image5.jpg', 'viewer/img/image6.jpg',
                   'viewer/img/image7.jpg', 'viewer/img/image8.jpg', 'viewer/img/image9.jpg']
 
