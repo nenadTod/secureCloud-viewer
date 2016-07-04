@@ -201,6 +201,25 @@ class GoogleDriveAPI(AbstractDriveAPI):
 
         return True
 
+    def download_shared_file(self, folder_id, file_name, download_path):
+        dr = folder_id.split('!')[0]
+        folder = self.client.item(drive=dr, id=folder_id).children.get()
+
+        for item in folder:
+            if item.file is not None and item.name.lower() == file_name.lower():
+                self.client.item(drive=dr, id=item.id).download(download_path + "/" + item.name.lower())
+
+        return True
+
+    def get_user_id_by_folder_id(self, folder_id):
+        file_list = self.drive.ListFile({'q': "'" + str(
+            folder_id) + "' in parents and trashed=false and mimeType='application/vnd.google-apps.folder'"}).GetList()
+
+        for file in file_list:
+            print 's'
+
+
+
     def _authentication_main_folder(self):
 
         h = httplib2.Http()
