@@ -115,7 +115,7 @@ class SCDecryptor:
 
         return True
 
-    def decryptShared(self, dir_path, dir_path_view, gallery_name, drive):
+    def decryptShared(self, dir_path, dir_path_view, gallery_name, drive, folder_name, images_per_page, active_page):
 
         user_id = drive.get_user_id_by_folder_id(gallery_name)
         hid = SHA256.new(user_id).hexdigest()
@@ -123,9 +123,11 @@ class SCDecryptor:
         if len(ret) == 0:
             return None
 
-        uid = uuid.uuid1()
-        user_temp_dir = dir_path + str(uid)
-        user_temp_dir_view = dir_path_view + str(uid)
+        if folder_name == "":
+            folder_name = uuid.uuid1()
+
+        user_temp_dir = dir_path + str(folder_name)
+        user_temp_dir_view = dir_path_view + str(folder_name)
         if not os.path.exists(user_temp_dir):
             os.makedirs(user_temp_dir)
 
@@ -137,9 +139,6 @@ class SCDecryptor:
         same_user = False
         if cloud_user_id == user_id:
             same_user = True
-
-        # drive.download_file(gallery_name, 'slika.jpg', 'viewer/static/viewer/img')
-        # drive.download_shared_file(gallery_name, 'meta1-de.txt', 'tu')
 
         if same_user:
             drive.download_file(gallery_name, self.meta2D, user_temp_dir)
@@ -177,30 +176,31 @@ class SCDecryptor:
                     dsk = key.decrypt(sc.b642bin(line_content[0]))
                 else:
 
-                    if same_user:
-                        drive.download_file(gallery_name, line_content[0], user_temp_dir)
-                    else:
-                        drive.download_shared_file(gallery_name, line_content[0], user_temp_dir)
+                    if (i >= images_per_page * (active_page - 1)) and\
+                            (i < images_per_page*active_page):
+                        if same_user:
+                            drive.download_file(gallery_name, line_content[0], user_temp_dir)
+                        else:
+                            drive.download_shared_file(gallery_name, line_content[0], user_temp_dir)
 
-                    with open(user_temp_dir + "/" + line_content[0], 'r') as fhI2:
-                        enc_pic_data_hex = fhI2.read()
-                        enc_pic_data_bin = sc.b642bin(enc_pic_data_hex)
+                        with open(user_temp_dir + "/" + line_content[0], 'r') as fhI2:
+                            enc_pic_data_hex = fhI2.read()
+                            enc_pic_data_bin = sc.b642bin(enc_pic_data_hex)
 
-                        aes = AES.new(dsk, AES.MODE_CFB, sc.b642bin(line_content[1]))
-                        dec_pic_data_bin = aes.decrypt(enc_pic_data_bin)
+                            aes = AES.new(dsk, AES.MODE_CFB, sc.b642bin(line_content[1]))
+                            dec_pic_data_bin = aes.decrypt(enc_pic_data_bin)
 
-                        location = user_temp_dir + "/" + line_content[0]
-                        location_view = user_temp_dir_view + "/" + line_content[0]
-                        ret_img_location.append(location_view)
-                        with open(location, 'wb') as fhO:
-                            fhO.write(dec_pic_data_bin)
+                            location = user_temp_dir + "/" + line_content[0]
+                            location_view = user_temp_dir_view + "/" + line_content[0]
+                            ret_img_location.append(location_view)
+                            with open(location, 'wb') as fhO:
+                                fhO.write(dec_pic_data_bin)
 
                     i += 1
 
-                    if i == 9:
-                        break
+            page_no = (i // images_per_page) + 1
 
-        return user_temp_dir, ret_img_location
+        return folder_name, ret_img_location, page_no, i
 
 
 

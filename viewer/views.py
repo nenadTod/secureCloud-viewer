@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from functools import wraps
 from cloud_API.dropbox_API import DropboxAPI
 from cloud_API.one_drive_API import OneDriveAPI
 from cloud_API.google_drive_API import GoogleDriveAPI
-import os
 from django.views.decorators.csrf import csrf_protect
 from SCCrytpo_API.SCDecryptor import SCDecryptor
 
@@ -23,8 +21,11 @@ def session_decorator(function):
             request.session['current_page'] = 0
             request.session['current_images'] = []
             request.session['drive'] = {}
+            request.session['folder_name'] = ""
+            request.session['history'] = []
         run = function(*args, **kwargs)
         return run
+
     return wrapped
 
 
@@ -44,13 +45,25 @@ def open_page(request):
     if active_page < 1 or pages_no < active_page:
         active_page = 1
 
-    # TODO get images on current page from cloud
-    images = ['viewer/img/image1.jpg', 'viewer/img/image2.jpg', 'viewer/img/image3.jpg',
-              'viewer/img/image4.jpg', 'viewer/img/image5.jpg', 'viewer/img/image6.jpg',
-              'viewer/img/image7.jpg', 'viewer/img/image8.jpg', 'viewer/img/image9.jpg']
+    images_per_page = 6
+    dir_path = "viewer/static/user_data/"
+    dir_path_view = "user_data/"
+
+    history = request.session['history']
+    if len(history[active_page - 1]) == 0:
+        scd = SCDecryptor()
+        folder_name, images, pages_no, images_no = scd.decryptShared(dir_path, dir_path_view,
+                                                                     request.session['gallery_location'],
+                                                                     request.session['drive'],
+                                                                     request.session['folder_name']
+                                                                     , images_per_page, active_page)
+        history[active_page - 1] = images
+    else:
+        images = request.session['history'][active_page - 1]
 
     request.session['current_page'] = int(active_page)
     request.session['current_images'] = images
+    request.session['history'] = history
     context = get_context(request)
     return render(request, 'viewer/index.html', context)
 
@@ -61,7 +74,6 @@ def change_cloud(request):
     cloud_name = request.POST.get('cloud_name')
     if cloud_name is not None:
 
-        user = "Micko"
         if cloud_name == 'google_drive':
             drive = GoogleDriveAPI()
         elif cloud_name == 'one_drive':
@@ -97,32 +109,31 @@ def change_gallery(request):
         else:
             drive = request.session.get('drive')
 
+        images_per_page = 6
+
         dir_path = "viewer/static/user_data/"
         dir_path_view = "user_data/"
-        #drive.download_shared_file(gallery_name, 'meta1-de.txt', temp_dir)
+
         scd = SCDecryptor()
-        folder, images = scd.decryptShared(dir_path, dir_path_view, gallery_name, drive)
-
-
-        # drive.download_file(gallery_name, 'slika.jpg', 'viewer/static/viewer/img')
-        #drive.download_shared_file(gallery_name, 'meta1-de.txt', 'tu')
-        #drive.download_file(gallery_name, 'test2.jpg', temp_dir)
-        user_id = drive.get_user_id_by_folder_id(gallery_name)
-
-        # TODO get number of images in selected folder
-        images_no = 10
-        # TODO get number of pages for this folder (single page contains 15 images)
-        pages_no = 3
-        # TODO get images for this folder
-        # images = ['user_data/tu/test2.jpg', 'viewer/img/image2.jpg', 'viewer/img/image3.jpg',
-        #          'viewer/img/image4.jpg', 'viewer/img/image5.jpg', 'viewer/img/image6.jpg',
-        #          'viewer/img/image7.jpg', 'viewer/img/image8.jpg', 'viewer/img/image9.jpg']
+        folder_name, images, pages_no, images_no = scd.decryptShared(dir_path, dir_path_view,
+                                                                     gallery_name, drive, ""
+                                                                     , images_per_page, 1)
 
         request.session['gallery_location'] = gallery_name
         request.session['number_of_images'] = int(images_no)
         request.session['number_of_pages'] = int(pages_no)
         request.session['current_page'] = 1
         request.session['current_images'] = images
+        request.session['folder_name'] = folder_name
+
+        history = []
+        for x in range(0, pages_no):
+            temp = []
+            history.append(temp)
+
+        history[0] = images
+
+        request.session['history'] = history
 
     return redirect('index', permanent=True)
 
@@ -137,7 +148,7 @@ def get_context(request):
     context = {
         "selected_drive": request.session['cloud_name'],
         "cloud_user": request.session['user_username'],
-        "folders_list":  request.session['cloud_galleries'],
+        "folders_list": request.session['cloud_galleries'],
         "selected_gallery": request.session['gallery_location'],
         "images_number": request.session['number_of_images'],
         "total_pages": request.session['number_of_pages'],
