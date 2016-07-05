@@ -171,7 +171,7 @@ class SCDecryptor:
 
             i = 0
             for line in fhI:
-                line_content = str.split(line)
+                line_content = line.split(",")
                 if len(line_content) == 1:
                     dsk = key.decrypt(sc.b642bin(line_content[0]))
                 else:
