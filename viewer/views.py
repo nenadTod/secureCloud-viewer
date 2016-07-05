@@ -5,7 +5,7 @@ from cloud_API.one_drive_API import OneDriveAPI
 from cloud_API.google_drive_API import GoogleDriveAPI
 from django.views.decorators.csrf import csrf_protect
 from SCCrytpo_API.SCDecryptor import SCDecryptor
-
+import shutil
 
 def session_decorator(function):
     @wraps(function)
@@ -51,10 +51,21 @@ def open_page(request):
 
     history = request.session['history']
     if len(history[active_page - 1]) == 0:
+
+
+        cloud_name = request.session.get('cloud_name')
+
+        if cloud_name == 'google_drive':
+            drive = GoogleDriveAPI()
+            drive.authenticate()
+        else:
+            drive = request.session.get('drive')
+
+
         scd = SCDecryptor()
         folder_name, images, pages_no, images_no = scd.decryptShared(dir_path, dir_path_view,
                                                                      request.session['gallery_location'],
-                                                                     request.session['drive'],
+                                                                     drive,
                                                                      request.session['folder_name']
                                                                      , images_per_page, active_page)
         history[active_page - 1] = images
@@ -133,7 +144,9 @@ def change_gallery(request):
             temp = []
             history.append(temp)
 
-        history[0] = images
+
+        if len(images)> 0:
+            history[0] = images
 
         request.session['history'] = history
 
@@ -142,6 +155,12 @@ def change_gallery(request):
 
 @csrf_protect
 def close_session(request):
+    folder = str(request.session['folder_name'])
+    if folder != "":
+        dir_path = "viewer/static/user_data/"
+
+        shutil.rmtree(dir_path + folder)
+
     request.session.clear()
     return redirect('index', permanent=True)
 
