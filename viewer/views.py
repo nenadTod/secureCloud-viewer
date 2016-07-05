@@ -102,12 +102,7 @@ def change_gallery(request):
     gallery_name = request.POST.get('gallery_name')
     if gallery_name is not None:
 
-        cloud_name = request.session['cloud_name']
-        if cloud_name == 'google_drive':
-            drive = GoogleDriveAPI()
-            drive.authenticate()
-        else:
-            drive = request.session.get('drive')
+        drive = request.session.get('drive')
 
         images_per_page = 6
 
