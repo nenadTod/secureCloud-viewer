@@ -148,7 +148,7 @@ class GoogleDriveAPI(AbstractDriveAPI):
     def download_files(self, folder_id, download_path):
 
         h = httplib2.Http()
-        
+
         uri = 'https://www.googleapis.com/drive/v2/files?q=%27' + str(folder_id) + '%27+in+parents+and+trashed%3Dfalse'
         resp, content = h.request(
             uri=uri,
