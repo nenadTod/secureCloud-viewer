@@ -18,19 +18,10 @@ class SCDecryptor:
 
     def __init__(self):
         self.temp_dir = "sc_temp_down"
-        self.temp_meta1D = "meta1-de.txt"
-        self.temp_meta1E = "meta1-en.txt"
 
-        self.storage_folder = "sc_storage"
         self.storage_GD_folder = "google_drive"
         self.storage_OD_folder = "one_drive"
         self.storage_DB_folder = "drop_box"
-        self.storage_file_pri = "private.txt"
-
-        self.meta1E = 'meta1-en.txt'
-        self.meta1D = 'meta1-de.txt'
-        self.meta1EEnum = 1
-        self.meta1DEnum = 2
 
         self.meta2E = 'meta2-en.txt'
         self.meta2D = 'meta2-de.txt'
