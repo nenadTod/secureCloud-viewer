@@ -6,7 +6,7 @@ import uuid
 
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
-from SCCrytpo_API.SCCryptoUtil import SCCrypto
+from SCCrytpo.SCCryptoUtil import SCCrypto
 
 from cloud_API.google_drive_API import GoogleDriveAPI
 from cloud_API.one_drive_API import OneDriveAPI

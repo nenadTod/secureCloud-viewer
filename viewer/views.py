@@ -4,7 +4,7 @@ from cloud_API.dropbox_API import DropboxAPI
 from cloud_API.one_drive_API import OneDriveAPI
 from cloud_API.google_drive_API import GoogleDriveAPI
 from django.views.decorators.csrf import csrf_protect
-from SCCrytpo_API.SCDecryptor import SCDecryptor
+from SCCrytpo.SCDecryptor import SCDecryptor
 import shutil
 
 def session_decorator(function):

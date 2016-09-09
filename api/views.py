@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import bcrypt
 from Crypto.PublicKey import RSA
-from SCCrytpo_API.SCCryptoUtil import SCCrypto
+from SCCrytpo.SCCryptoUtil import SCCrypto
 from api.models import Encryption
 
 
